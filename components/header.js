@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Search from '../assets/svg/search'
-import { ConnectButton } from 'web3uikit'
+//import { ConnectButton } from 'web3uikit'
 // import { useContext } from 'react'
 // import { CoinMarketContext } from '../context/context'
 
