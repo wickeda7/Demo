@@ -37,10 +37,29 @@ export const DemoProvider = ({ children }) => {
         throwOnError: true,
       });
     }
+
+    const getTopTenCoins = async () => {
+        try {
+          const res = await fetch('/api/getTopTen')
+          const data = await res.json()
+          return data.data.data
+        } catch (e) {
+          console.log(e.message)
+        }
+      }
+      const getTrending = async () => {
+        try {
+          const res = await fetch('/api/getTrending')
+          const data = await res.json()
+          return data.data.data
+        } catch (e) {
+          console.log(e.message)
+        }
+      }
     return (
         <DemoContext.Provider
             value={{
-                // getTopTenCoins,
+                getTopTenCoins,
                 // openBuyCryptoModal,
                 // setOpenBuyCryptoModal,
                 // coins,
