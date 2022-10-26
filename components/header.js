@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Search from '../assets/svg/search'
-import ConnectButton from './ConnectButton' 
+import ConnectButton2 from './ConnectButton' 
 // import { useContext } from 'react'
 // import { CoinMarketContext } from '../context/context'
 
@@ -67,7 +67,7 @@ const Header = () => {
         </nav>
 
         <div className='flex items-center'>
-          <ConnectButton /> 
+          <ConnectButton2 /> 
           <div className={styles.inputContainer}>
             <Search />
             <input className={styles.input} placeholder='Search' />
