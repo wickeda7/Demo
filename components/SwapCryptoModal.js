@@ -24,7 +24,7 @@ const SwapCryptoModal = () => {
         toToken,
         setToToken,
     } = useContext(DemoContext)
-
+    console.log('test')
     if (openBuyCryptoModal)
         return (
             <div className={styles.modal}>
