@@ -1,7 +1,9 @@
+import React from 'react'
 import CMCtable from '../components/cmc-table/cmcTable'
 import Header from '../components/header'
 import Trending from '../components/trending'
-import SwapCryptoModal from '../components/swapCryptoModal'
+import SwapCryptoModal from '../components/SwapCryptoModal'
+//import SwapCryptoModal from '../components/swapCryptoModal'
 
 export default function Home() {
   return (
