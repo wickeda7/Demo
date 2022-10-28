@@ -5,6 +5,10 @@ import ConnectButton2 from './ConnectButton'
 // import { useContext } from 'react'
 // import { CoinMarketContext } from '../context/context'
 
+
+//import {useMoralis} from "react-moralis";
+
+
 const styles = {
   navLink: `text-white flex mx-[10px]`,
   badge: `rounded-full bg-blue-600 h-1 w-1 absolute bottom-5 right-0 top-1 ring-4`,
@@ -18,9 +22,16 @@ const styles = {
 }
 
 const Header = () => {
-  //const { getQuote } = useContext(CoinMarketContext)
+  //const {Moralis, accout} = useMoralis()
+  // async function test(){
+  //   const Coins = Moralis.Object.extend("Coins");
+  //   const coins = new Coins();
+  //   coins.set('name', 'BitHoss')
+  //   await coins.save();
+  // }
   return (
     <div className={styles.header}>
+      {/* <button onClick={test}>Save</button> */}
       <Image
         alt=''
         src='https://s2.coinmarketcap.com/static/cloud/img/coinmarketcap_white_1.svg'

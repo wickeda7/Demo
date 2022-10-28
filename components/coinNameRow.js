@@ -1,4 +1,5 @@
-import React from "react"
+import React, { useContext } from "react"
+import { DemoContext } from "../context/context"
 import Image from "next/image"
 
 // Token Logos
@@ -23,7 +24,7 @@ const styles = {
 
 const CoinNameRow = ({ name, icon, clicked }) => {
 
-    //const { openModal } = useContext(TokenUmbrellaContext)
+    const { openModal } = useContext(DemoContext)
 
     const coinIcon = () => {
         switch (name) {

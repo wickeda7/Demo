@@ -1,23 +1,23 @@
 const main = async () => {
-  const adaFactory = await hre.ethers.getContractFactory('AdaTo')
-  const adaContract = await adaFactory.deploy()
-  await adaContract.deployed()
-  console.log('Dogecoin deployed to:', adaContract.address)
+  // const btFactory = await hre.ethers.getContractFactory('BitHo')
+  // const btContract = await btFactory.deploy()
+  // await btContract.deployed()
+  // console.log('BitHo deployed to:', btContract.address)
 
-  const linkFactory = await hre.ethers.getContractFactory('Link')
-  const linkContract = await linkFactory.deploy()
-  await linkContract.deployed()
-  console.log('LinkToken deployed to:', linkContract.address)
+  // const bitFactory = await hre.ethers.getContractFactory('BitTo')
+  // const bitContract = await bitFactory.deploy()
+  // await bitContract.deployed()
+  // console.log('BitTo deployed to:', bitContract.address)
 
-  const daiFactory = await hre.ethers.getContractFactory('Dai')
-  const daiContract = await daiFactory.deploy()
-  await daiContract.deployed()
-  console.log('DaiToken deployed to:', daiContract.address)
+  // const flFactory = await hre.ethers.getContractFactory('FLuna')
+  // const flContract = await flFactory.deploy()
+  // await flContract.deployed()
+  // console.log('Fluna deployed to:', flContract.address)
 
-  const usdcFactory = await hre.ethers.getContractFactory('Usdc')
-  const usdcContract = await usdcFactory.deploy()
-  await usdcContract.deployed()
-  console.log('UsdcToken deployed to:', usdcContract.address)
+  const scFactory = await hre.ethers.getContractFactory('Scoin')
+  const scContract = await scFactory.deploy()
+  await scContract.deployed()
+  console.log('Scoin deployed to:', scContract.address)
 }
 
   ; (async () => {
@@ -25,7 +25,7 @@ const main = async () => {
           await main()
           process.exit(0)
       } catch (error) {
-          console.error(error)
+          console.error(error)  
           process.exit(1)
       }
-  })(
+  })()
