@@ -8,7 +8,7 @@ import NFTBox from "../components/NFTBox";
 import NftMarket from "../constants/abi.json";
 import { DemoContext } from "../context/context";
 
-const mynft = () => {
+const MyNft = () => {
   let { isWeb3Enabled, account } = useContext(DemoContext);
   const [color, setColor] = useState("#ffffff");
   const [deleteToken, setDeleteToken] = useState([]);
@@ -123,4 +123,4 @@ const mynft = () => {
   );
 };
 
-export default mynft;
+export default MyNft;

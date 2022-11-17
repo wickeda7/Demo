@@ -6,7 +6,7 @@ import { useQuery, gql } from "@apollo/client";
 import NFTBox from "../components/NFTBox";
 import { DemoContext } from "../context/context";
 
-const nft = () => {
+const Nft = () => {
   let { isWeb3Enabled, account } = useContext(DemoContext);
   const [color, setColor] = useState("#ffffff");
   const [deleteToken, setDeleteToken] = useState([]);
@@ -103,4 +103,4 @@ const nft = () => {
   );
 };
 
-export default nft;
+export default Nft;

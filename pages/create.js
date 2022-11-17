@@ -6,7 +6,7 @@ import { useLazyQuery, useQuery, gql } from "@apollo/client";
 import { DemoContext } from "../context/context";
 import NFTBox from "../components/NFTBox";
 
-const sell = () => {
+const Sell = () => {
   const [newNft, setNewNft] = useState("");
   const [pendingText, setPendingText] = useState("");
   let { isWeb3Enabled, account } = useContext(DemoContext);
@@ -131,4 +131,4 @@ const sell = () => {
   );
 };
 
-export default sell;
+export default Sell;
