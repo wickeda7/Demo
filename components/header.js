@@ -1,13 +1,12 @@
-import React from 'react'
-import Image from 'next/image'
-import Search from '../assets/svg/search'
-import ConnectButton2 from './ConnectButton' 
+import React from "react";
+import Link from "next/link";
+import Image from "next/image";
+import Search from "../assets/svg/search";
+import ConnectButton2 from "./ConnectButton";
 // import { useContext } from 'react'
 // import { CoinMarketContext } from '../context/context'
 
-
 //import {useMoralis} from "react-moralis";
-
 
 const styles = {
   navLink: `text-white flex mx-[10px]`,
@@ -19,7 +18,7 @@ const styles = {
   inputContainer: `flex items-center justify-center p-2 rounded bg-[#171924]`,
   input: `bg-transparent outline-none text-white w-70 ml-3`,
   cursorPointer: `mr-5 cursor-pointer`,
-}
+};
 
 const Header = () => {
   //const {Moralis, accout} = useMoralis()
@@ -33,15 +32,17 @@ const Header = () => {
     <div className={styles.header}>
       {/* <button onClick={test}>Save</button> */}
       <Image
-        alt=''
-        src='https://s2.coinmarketcap.com/static/cloud/img/coinmarketcap_white_1.svg'
+        alt=""
+        src="https://s2.coinmarketcap.com/static/cloud/img/coinmarketcap_white_1.svg"
         width={220}
         height={220}
       />
       <div className={styles.headerWrapper}>
         <nav className={styles.nav}>
           <div className={styles.navItem}>
-            <div className={styles.navLink}>Cryptocurrencies</div>
+            <div className={styles.navLink}>
+              <Link href="/">Cryptocurrencies</Link>
+            </div>
             <div className={styles.badge} />
           </div>
 
@@ -50,43 +51,35 @@ const Header = () => {
           </div> */}
 
           <div className={styles.navItem}>
-            <div className={styles.navLink}>NFT</div>
+            <div className={styles.navLink}>
+              <Link href="/nft">MarketPlace</Link>
+            </div>
+            <div className={styles.badge} />
+          </div>
+          <div className={styles.navItem}>
+            <div className={styles.navLink}>
+              <Link href="/create">Create Portal</Link>
+            </div>
             <div className={styles.badge} />
           </div>
 
           <div className={styles.navItem}>
-            <div className={styles.navLink}>Cryptown</div>
-            <div className={styles.badge} />
-          </div>
-
-          <div className={styles.navItem}>
-            <div className={styles.navLink}>Portfolio</div>
-          </div>
-
-          <div className={styles.navItem}>
-            <div className={styles.navLink}>Watchlist</div>
-          </div>
-
-          <div className={styles.navItem}>
-            <div className={styles.navLink}>Products</div>
-            <div className={styles.badge} />
-          </div>
-
-          <div className={styles.navItem}>
-            <div className={styles.navLink}>Learn</div>
+            <div className={styles.navLink}>
+              <Link href="/mynft">My NTF Portal</Link>
+            </div>
           </div>
         </nav>
 
-        <div className='flex items-center'>
-          <ConnectButton2 /> 
+        <div className="flex items-center">
+          <ConnectButton2 />
           <div className={styles.inputContainer}>
             <Search />
-            <input className={styles.input} placeholder='Search' />
+            <input className={styles.input} placeholder="Search" />
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

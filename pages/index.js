@@ -1,19 +1,18 @@
-import React from 'react'
-import CMCtable from '../components/cmc-table/cmcTable'
-import Header from '../components/header'
-import Trending from '../components/trending'
-import SwapCryptoModal from '../components/SwapCryptoModal'
-//import SwapCryptoModal from '../components/swapCryptoModal'
+import React from "react";
+import CMCtable from "../components/cmc-table/cmcTable";
+import Header from "../components/header";
+import Trending from "../components/trending";
+import SwapCryptoModal from "../components/SwapCryptoModal";
 
 export default function Home() {
   return (
-    <div className='min-h-screen'>
+    <div className="min-h-screen">
       <Header />
       <SwapCryptoModal />
-      <div className='mt-10' />
+      <div className="mt-10" />
       <Trending />
-      <div className='mt-20' />
+      <div className="mt-20" />
       <CMCtable />
     </div>
-  )
+  );
 }
