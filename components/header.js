@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Search from "../assets/svg/search";
 import ConnectButton2 from "./ConnectButton";
+import { useRouter } from "next/router";
 // import { useContext } from 'react'
 // import { CoinMarketContext } from '../context/context'
 
@@ -12,6 +13,7 @@ const styles = {
   navLink: `text-white flex mx-[10px]`,
   badge: `rounded-full bg-blue-600 h-1 w-1 absolute bottom-5 right-0 top-1 ring-4`,
   navItem: `relative mr-1 cursor-pointer hover:opacity-60`,
+  navActive: `relative mr-1 opacity-60`,
   nav: `flex justify-center items-center gap-[20px]`,
   header: `bg-[#17171A] text-white h-20 flex gap-[100px] w-full p-[30px]`,
   headerWrapper: `flex justify-center h-full max-w-screen-xl mx-auto px-4`,
@@ -28,7 +30,8 @@ const Header = () => {
   //   coins.set('name', 'BitHoss')
   //   await coins.save();
   // }
-
+  const router = useRouter();
+  console.log(router.pathname);
   return (
     <div className={styles.header}>
       {/* <button onClick={test}>Save</button> */}
@@ -41,33 +44,45 @@ const Header = () => {
       <div className={styles.headerWrapper}>
         <nav className={styles.nav}>
           <div className={styles.navItem}>
-            <div className={styles.navLink}>
+            <div
+              className={
+                router.pathname == "/" ? styles.navActive : styles.navLink
+              }
+            >
               <Link href="/">Cryptocurrencies</Link>
             </div>
-            <div className={styles.badge} />
+            {router.pathname == "/" && <div className={styles.badge} />}
           </div>
-
-          {/* <div className={styles.navItem} onClick={getQuote}>
-            <div className={styles.navLink}>Exchanges</div>
-          </div> */}
-
           <div className={styles.navItem}>
-            <div className={styles.navLink}>
+            <div
+              className={
+                router.pathname == "/nft" ? styles.navActive : styles.navLink
+              }
+            >
               <Link href="/nft">MarketPlace</Link>
             </div>
-            <div className={styles.badge} />
+            {router.pathname == "/nft" && <div className={styles.badge} />}
           </div>
           <div className={styles.navItem}>
-            <div className={styles.navLink}>
+            <div
+              className={
+                router.pathname == "/create" ? styles.navActive : styles.navLink
+              }
+            >
               <Link href="/create">Create Portal</Link>
             </div>
-            <div className={styles.badge} />
+            {router.pathname == "/create" && <div className={styles.badge} />}
           </div>
 
           <div className={styles.navItem}>
-            <div className={styles.navLink}>
+            <div
+              className={
+                router.pathname == "/mynft" ? styles.navActive : styles.navLink
+              }
+            >
               <Link href="/mynft">My NTF Portal</Link>
             </div>
+            {router.pathname == "/mynft" && <div className={styles.badge} />}
           </div>
         </nav>
 

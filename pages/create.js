@@ -12,23 +12,6 @@ const Sell = () => {
   const { isWeb3Enabled, account } = useContext(DemoContext);
   const marketplaceAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 
-  const loadData = useCallback(async () => {
-    const res = await refetch({ variables: { account } });
-    // ? provide it with the query variable
-  }, [account]);
-
-  useEffect(() => {
-    if (newNft) {
-      const timer = setTimeout(() => {
-        loadData();
-        setPendingText("");
-      }, 1000);
-      return () => clearTimeout(timer);
-    } else {
-      loadData();
-    }
-  }, [newNft, loadData]);
-
   const GET_ACTIVE_ITEMS = gql`
     query GetActiveItems($account: ID!) {
       marketItems(where: { sold: false, seller: $account }) {
@@ -48,6 +31,22 @@ const Sell = () => {
       variables: { account },
     }
   );
+  const loadData = useCallback(async () => {
+    const res = await refetch({ variables: { account } });
+    // ? provide it with the query variable
+  }, [account, refetch]);
+
+  useEffect(() => {
+    if (newNft) {
+      const timer = setTimeout(() => {
+        loadData();
+        setPendingText("");
+      }, 9000);
+      return () => clearTimeout(timer);
+    } else {
+      loadData();
+    }
+  }, [newNft, loadData]);
 
   if (listedNfts) {
     console.log(listedNfts);

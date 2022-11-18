@@ -3,40 +3,10 @@ import { useMoralis } from "react-moralis";
 import { DemoContext } from "../context/context";
 
 const ConnectButton2 = () => {
-  const {
-    authenticate,
-    enableWeb3,
-    user,
-    isWeb3Enabled,
-    isWeb3EnableLoading,
-    account,
-    Moralis,
-    deactivateWeb3,
-  } = useMoralis();
-  useEffect(() => {
-    console.log("Need to update this page to DemoContext");
-    if (
-      !isWeb3Enabled &&
-      typeof window !== "undefined" &&
-      window.localStorage.getItem("connected")
-    ) {
-      enableWeb3();
-      // enableWeb3({provider: window.localStorage.getItem("connected")}) // add walletconnect
-    }
-  }, [isWeb3Enabled, enableWeb3]);
-  // no array, run on every render
-  // empty array, run once
-  // dependency array, run when the stuff in it changesan
+  const { Moralis } = useMoralis();
 
-  useEffect(() => {
-    Moralis.onAccountChanged((account) => {
-      console.log("ffffff");
-      if (account == null) {
-        window.localStorage.removeItem("connected");
-        deactivateWeb3();
-      }
-    });
-  }, [Moralis, deactivateWeb3]);
+  const { isWeb3Enabled, account } = useContext(DemoContext);
+
   const connect = async (provider) => {
     // Enable web3 to get user address and chain
     await enableWeb3({ throwOnError: true, provider });
@@ -44,7 +14,6 @@ const ConnectButton2 = () => {
 
     if (typeof window !== "undefined") {
       window.localStorage.setItem("connected", "injected");
-      // window.localStorage.setItem("connected", "walletconnect")
     }
     // Get message to sign from the auth api
     const { message } = await Moralis.Cloud.run("requestMessage", {
@@ -53,7 +22,6 @@ const ConnectButton2 = () => {
       networkType: "evm",
     });
     // Authenticate and login via parse
-    console.log(message);
     await authenticate({
       signingMessage: message,
       throwOnError: true,

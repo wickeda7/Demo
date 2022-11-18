@@ -34,13 +34,19 @@ export const DemoProvider = ({ children }) => {
   const [amount, setAmount] = useState("");
   const [chainid, setchainid] = useState("");
 
-  useEffect(() => {
-    Moralis.onAccountChanged((account) => {
-      if (account == null) {
-        deactivateWeb3();
-      }
-    });
-  }, []);
+  Moralis.onAccountChanged((account) => {
+    if (account == null) {
+      deactivateWeb3();
+    }
+  });
+
+  // useEffect(() => {
+  //   Moralis.onAccountChanged((account) => {
+  //     if (account == null) {
+  //       deactivateWeb3();
+  //     }
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (
