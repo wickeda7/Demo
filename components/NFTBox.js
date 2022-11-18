@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useWeb3Contract, useMoralis } from "react-moralis";
 import { Card, Tag, useNotification } from "web3uikit";
 import NftMarket from "../constants/abi.json";
@@ -35,12 +35,13 @@ export default function NFTBox({
   listingPrice,
   updateListing,
 }) {
-  const { isWeb3Enabled, account } = useMoralis();
   const [imageURI, setImageURI] = useState("");
   const [tokenName, setTokenName] = useState("");
   const [tokenDescription, setTokenDescription] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [pending, setPending] = useState(false);
+
+  const { isWeb3Enabled, account } = useMoralis();
 
   const router = useRouter();
   const hideModal = () => setShowModal(false);
@@ -98,7 +99,18 @@ export default function NFTBox({
       },
     });
   }
-  async function updateUI() {
+  // async function updateUI() {
+  //   const tokenURI = await getTokenURI();
+  //   // We are going to cheat a little here...
+  //   if (tokenURI) {
+  //     const tokenURIResponse = await (await fetch(tokenURI)).json();
+  //     const imageURIURL = tokenURIResponse.image;
+  //     setImageURI(imageURIURL);
+  //     setTokenName(tokenURIResponse.name);
+  //     setTokenDescription(tokenURIResponse.description);
+  //   }
+  // }
+  const updateUI = useCallback(async () => {
     const tokenURI = await getTokenURI();
     // We are going to cheat a little here...
     if (tokenURI) {
@@ -108,13 +120,13 @@ export default function NFTBox({
       setTokenName(tokenURIResponse.name);
       setTokenDescription(tokenURIResponse.description);
     }
-  }
+  }, [getTokenURI]);
 
   useEffect(() => {
     if (isWeb3Enabled) {
       updateUI();
     }
-  }, [isWeb3Enabled]);
+  }, [isWeb3Enabled, updateUI]);
 
   const formattedSellerAddress = isOwnedByUser
     ? "you"
@@ -187,6 +199,7 @@ export default function NFTBox({
                     src={imageURI}
                     height="200"
                     width="200"
+                    alt=""
                   />
                   <div className="font-bold">
                     {ethers.utils.formatUnits(price, "ether")} ETH

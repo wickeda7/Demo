@@ -13,9 +13,9 @@ export default function UpdateListingModal({
   onClose,
   updateListing,
 }) {
-  const dispatch = useNotification();
-
   const [priceToUpdateListingWith, setPriceToUpdateListingWith] = useState(0);
+
+  const dispatch = useNotification();
 
   const handleUpdateListingSuccess = () => {
     dispatch({

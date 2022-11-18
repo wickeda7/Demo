@@ -7,12 +7,11 @@ import NFTBox from "../components/NFTBox";
 import { DemoContext } from "../context/context";
 
 const Nft = () => {
-  let { isWeb3Enabled, account } = useContext(DemoContext);
   const [color, setColor] = useState("#ffffff");
   const [deleteToken, setDeleteToken] = useState([]);
   const [deleteToken1, setDeleteToken1] = useState([]);
   let nfts = [];
-
+  let { isWeb3Enabled, account } = useContext(DemoContext);
   const override = {
     display: "block",
     margin: "0 auto",

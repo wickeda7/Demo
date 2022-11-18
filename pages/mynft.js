@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../components/header";
 import ClipLoader from "react-spinners/ClipLoader";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { useQuery, gql } from "@apollo/client";
 import { useWeb3Contract } from "react-moralis";
 import NFTBox from "../components/NFTBox";
@@ -9,12 +9,12 @@ import NftMarket from "../constants/abi.json";
 import { DemoContext } from "../context/context";
 
 const MyNft = () => {
-  let { isWeb3Enabled, account } = useContext(DemoContext);
   const [color, setColor] = useState("#ffffff");
   const [deleteToken, setDeleteToken] = useState([]);
   const [deleteToken1, setDeleteToken1] = useState([]);
   const [listingPrice, setListingPrice] = useState("");
   let itemBoughts = [];
+  let { isWeb3Enabled, account } = useContext(DemoContext);
   const marketplaceAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 
   const override = {
@@ -28,11 +28,17 @@ const MyNft = () => {
     functionName: "getListingPrice",
   });
 
-  async function getListPrice() {
+  // async function getListPrice() {
+  //   let lPrice = await getPrice();
+  //   lPrice = lPrice.toString();
+  //   setListingPrice(lPrice);
+  // }
+
+  const getListPrice = useCallback(async () => {
     let lPrice = await getPrice();
     lPrice = lPrice.toString();
     setListingPrice(lPrice);
-  }
+  }, [getPrice]);
 
   useEffect(() => {
     if (isWeb3Enabled) {
@@ -40,7 +46,7 @@ const MyNft = () => {
         getListPrice();
       }
     }
-  }, [isWeb3Enabled]);
+  }, [isWeb3Enabled, listingPrice, getListPrice]);
 
   const GET_BUY_ITEMS = gql`
     query GetBuyItems($account: ID!) {

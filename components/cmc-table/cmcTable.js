@@ -1,42 +1,40 @@
-import { useContext, useEffect, useState, useCallback } from 'react'
-import btc from '../../assets/btc.png'
-import { DemoContext } from '../../context/context'; 
-import CMCtableHeader from './cmcTableHeader'
-import CMCtableRow from './cmcTableRow'
+import { useContext, useEffect, useState, useCallback } from "react";
+import btc from "../../assets/btc.png";
+import { DemoContext } from "../../context/context";
+import CMCtableHeader from "./cmcTableHeader";
+import CMCtableRow from "./cmcTableRow";
 
 const CMCtable = () => {
-  let { getTopTenCoins } = useContext(DemoContext)
-  let [coinData, setCoinData] = useState(null)
-
-  useEffect(() => {
-    setData()
-  }, [])
-
+  let [coinData, setCoinData] = useState(null);
+  let { getTopTenCoins } = useContext(DemoContext);
   const setData = useCallback(async () => {
     try {
-      let apiResponse = await getTopTenCoins()
-      let filteredResponse = []
+      let apiResponse = await getTopTenCoins();
+      let filteredResponse = [];
 
       for (let i = 0; i < apiResponse.length; i++) {
-        const element = apiResponse[i]
-        if (element.cmc_rank <= 10) filteredResponse.push(element)
+        const element = apiResponse[i];
+        if (element.cmc_rank <= 10) filteredResponse.push(element);
       }
 
-      setCoinData(filteredResponse)
+      setCoinData(filteredResponse);
     } catch (e) {
-      console.log(e.message)
+      console.log(e.message);
     }
-  }, [getTopTenCoins])
+  }, [getTopTenCoins]);
+  useEffect(() => {
+    setData();
+  }, [setData]);
 
   return (
-    <div className='text-white font-bold'>
-      <div className='mx-auto max-w-screen-2xl'>
-        <table className='w-full'>
+    <div className="text-white font-bold">
+      <div className="mx-auto max-w-screen-2xl">
+        <table className="w-full">
           <CMCtableHeader />
 
           {coinData && coinData ? (
             coinData.map((coin, index) => {
-                    return (
+              return (
                 <CMCtableRow
                   key={index}
                   starNum={coin.cmc_rank}
@@ -53,7 +51,7 @@ const CMCtable = () => {
                   volumeValue={coin.total_supply}
                   circulatingSupply={coin.circulating_supply}
                 />
-              )
+              );
             })
           ) : (
             <></>
@@ -61,7 +59,7 @@ const CMCtable = () => {
         </table>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CMCtable
+export default CMCtable;

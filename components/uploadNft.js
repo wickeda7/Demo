@@ -8,8 +8,6 @@ import { Input, useNotification } from "web3uikit";
 import NftMarket from "../constants/abi.json";
 
 const UploadNFT = ({ updateaTable, updateListing }) => {
-  const { runContractFunction } = useWeb3Contract();
-  const marketplaceAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
   const [fileUrl, setFileUrl] = useState(null);
   const [uploading, setUploading] = useState(null);
   const [loadingState, setLoadingState] = useState(false);
@@ -18,6 +16,10 @@ const UploadNFT = ({ updateaTable, updateListing }) => {
     name: "",
     description: "",
   });
+
+  const { runContractFunction } = useWeb3Contract();
+  const marketplaceAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
+
   const fileTypes = ["JPG", "PNG", "GIF"];
   const dispatch = useNotification();
 
@@ -207,6 +209,7 @@ const UploadNFT = ({ updateaTable, updateListing }) => {
                 height={320}
                 maxDelay={10000}
                 src={fileUrl}
+                alt=""
               />
             )}
 

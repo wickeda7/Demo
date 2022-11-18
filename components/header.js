@@ -28,6 +28,7 @@ const Header = () => {
   //   coins.set('name', 'BitHoss')
   //   await coins.save();
   // }
+
   return (
     <div className={styles.header}>
       {/* <button onClick={test}>Save</button> */}

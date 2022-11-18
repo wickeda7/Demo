@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../components/header";
 import UploadNFT from "../components/uploadNft";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { useLazyQuery, useQuery, gql } from "@apollo/client";
 import { DemoContext } from "../context/context";
 import NFTBox from "../components/NFTBox";
@@ -9,24 +9,25 @@ import NFTBox from "../components/NFTBox";
 const Sell = () => {
   const [newNft, setNewNft] = useState("");
   const [pendingText, setPendingText] = useState("");
-  let { isWeb3Enabled, account } = useContext(DemoContext);
+  const { isWeb3Enabled, account } = useContext(DemoContext);
   const marketplaceAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 
+  const loadData = useCallback(async () => {
+    const res = await refetch({ variables: { account } });
+    // ? provide it with the query variable
+  }, [account]);
+
   useEffect(() => {
-    if (account) {
-      console.log(account);
-      if (newNft) {
-        const timer = setTimeout(() => {
-          console.log("new nft");
-          loadData(account);
-          setPendingText("");
-        }, 1000);
-        return () => clearTimeout(timer);
-      } else {
-        loadData(account);
-      }
+    if (newNft) {
+      const timer = setTimeout(() => {
+        loadData();
+        setPendingText("");
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else {
+      loadData();
     }
-  }, [newNft, account]);
+  }, [newNft, loadData]);
 
   const GET_ACTIVE_ITEMS = gql`
     query GetActiveItems($account: ID!) {
@@ -51,10 +52,10 @@ const Sell = () => {
   if (listedNfts) {
     console.log(listedNfts);
   }
-  async function loadData(account) {
-    const res = await refetch({ variables: { account } });
-    console.log(res);
-  }
+  // async function loadData(account) {
+  //   const res = await refetch({ variables: { account } });
+  //   console.log(res);
+  // }
   function updateTable(newNft) {
     setNewNft(newNft);
   }
