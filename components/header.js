@@ -5,9 +5,9 @@ import Search from "../assets/svg/search";
 import ConnectButton2 from "./ConnectButton";
 import { useRouter } from "next/router";
 // import { useContext } from 'react'
-// import { CoinMarketContext } from '../context/context'
-
-//import {useMoralis} from "react-moralis";
+import { DemoContext } from "../context/context";
+import { useContext } from "react";
+//import { useMoralis } from "react-moralis";
 
 const styles = {
   navLink: `text-white flex mx-[10px]`,
@@ -30,11 +30,17 @@ const Header = () => {
   //   coins.set('name', 'BitHoss')
   //   await coins.save();
   // }
+  let acName = "";
+  const { account } = useContext(DemoContext);
+  if (account) {
+    acName = account.slice(0, 6) == "0x9d29" ? "ACCOUNT2" : "ACCOUNT1";
+  }
+
   const router = useRouter();
-  console.log(router.pathname);
   return (
     <div className={styles.header}>
       {/* <button onClick={test}>Save</button> */}
+      {acName}
       <Image
         alt=""
         src="https://s2.coinmarketcap.com/static/cloud/img/coinmarketcap_white_1.svg"

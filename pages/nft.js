@@ -5,11 +5,14 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { useQuery, gql } from "@apollo/client";
 import NFTBox from "../components/NFTBox";
 import { DemoContext } from "../context/context";
+import Alerts from "../components/alerts";
 
 const Nft = () => {
   const [color, setColor] = useState("#ffffff");
   const [deleteToken, setDeleteToken] = useState([]);
   const [deleteToken1, setDeleteToken1] = useState([]);
+  const [pendingText, setPendingText] = useState("");
+
   let nfts = [];
   let { isWeb3Enabled, account } = useContext(DemoContext);
   const override = {
@@ -20,7 +23,7 @@ const Nft = () => {
 
   const GET_ACTIVE_ITEMS = gql`
     query GetActiveItems($account: ID!) {
-      marketItems(where: { sold: false, seller_not: $account }) {
+      marketItemCreateds(where: { sold: false, seller_not: $account }) {
         id
         seller
         owner
@@ -41,29 +44,29 @@ const Nft = () => {
 
   if (listedNfts) {
     if (deleteToken.length == 0) {
-      nfts = listedNfts.marketItems;
+      nfts = listedNfts.marketItemCreateds;
     } else {
-      nfts = listedNfts.marketItems.filter(
+      nfts = listedNfts.marketItemCreateds.filter(
         (nft) => !deleteToken1.includes(nft.tokenId)
       );
     }
-  }
-
-  if (error) {
-    console.log(error);
   }
   const marketplaceAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
   function updateTable(tokenId) {
     deleteToken1.push(tokenId);
     setDeleteToken1(deleteToken1);
     setDeleteToken([tokenId]);
+    setPendingText("");
   }
-
+  function updateStatusText(text) {
+    setPendingText(text);
+  }
   return (
     <div className="min-h-screen">
       <Header />
       <div className="container mx-auto">
         <h1 className="py-4 px-4 font-bold text-2xl">NFT Marketplace</h1>
+        <Alerts pendingText={pendingText} />
         <ClipLoader
           color={color}
           loading={loading}
@@ -76,7 +79,7 @@ const Nft = () => {
           {isWeb3Enabled ? (
             nfts && nfts.length > 0 ? (
               nfts.map((nft) => {
-                const { price, owner, tokenId, seller, sold } = nft;
+                const { price, owner, tokenId, seller, sold, id } = nft;
                 return (
                   <NFTBox
                     price={price}
@@ -84,9 +87,10 @@ const Nft = () => {
                     tokenId={tokenId}
                     marketplaceAddress={marketplaceAddress}
                     seller={seller}
-                    key={`${owner}${tokenId}`}
+                    key={id}
                     sold={sold}
                     updateaTable={updateTable}
+                    updateStatusText={updateStatusText}
                   />
                 );
               })

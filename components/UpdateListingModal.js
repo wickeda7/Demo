@@ -7,37 +7,57 @@ import { ethers } from "ethers";
 
 export default function UpdateListingModal({
   nftAddress,
+  hashId,
   tokenId,
   isVisible,
   marketplaceAddress,
   onClose,
-  updateListing,
+  updateStatusText,
+  updateaTable,
 }) {
   const [priceToUpdateListingWith, setPriceToUpdateListingWith] = useState(0);
 
   const dispatch = useNotification();
-
-  const handleUpdateListingSuccess = () => {
+  const { runContractFunction } = useWeb3Contract();
+  async function handleUpdateListingSuccess(tx) {
     dispatch({
       type: "success",
-      message: "listing updated",
-      title: "Listing updated - please refresh (and move blocks)",
+      message: "listing submitted",
+      title: "Listing submitted",
       position: "topR",
     });
     onClose && onClose();
     setPriceToUpdateListingWith("0");
-  };
+    updateStatusText("New Listing Update Pending");
+    await tx.wait(1);
+    updateaTable(priceToUpdateListingWith);
+    dispatch({
+      type: "success",
+      message: "listing updated",
+      title: "Listing updated",
+      position: "topR",
+    });
+  }
 
-  const { runContractFunction: updatePrice } = useWeb3Contract({
-    abi: nftMarketplaceAbi,
-    contractAddress: marketplaceAddress,
-    functionName: "updateListing",
-    params: {
-      nftAddress: nftAddress,
-      tokenId: tokenId,
-      newPrice: ethers.utils.parseEther(priceToUpdateListingWith || "0"),
-    },
-  });
+  async function updatePrice() {
+    const options = {
+      abi: nftMarketplaceAbi,
+      contractAddress: marketplaceAddress,
+      functionName: "updateListing",
+      params: {
+        nftAddress: nftAddress,
+        tokenId: tokenId,
+        newPrice: ethers.utils.parseEther(priceToUpdateListingWith || "0"),
+      },
+    };
+    await runContractFunction({
+      params: options,
+      onSuccess: handleUpdateListingSuccess,
+      onError: (error) => {
+        console.log(error);
+      },
+    });
+  }
 
   return (
     <Modal
@@ -45,13 +65,7 @@ export default function UpdateListingModal({
       onCancel={onClose}
       onCloseButtonPressed={onClose}
       onOk={() => {
-        //updateListing();
-        updatePrice({
-          onError: (error) => {
-            console.log(error);
-          },
-          onSuccess: () => handleUpdateListingSuccess(),
-        });
+        updatePrice();
       }}
     >
       <Input

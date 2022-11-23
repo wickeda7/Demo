@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from "react";
 import { useWeb3Contract, useMoralis } from "react-moralis";
 import { Card, Tag, useNotification } from "web3uikit";
 import NftMarket from "../constants/abi.json";
-import { useRouter } from "next/router";
 import Image from "next/image";
 
 import { ethers } from "ethers";
@@ -29,11 +28,11 @@ export default function NFTBox({
   tokenId,
   marketplaceAddress,
   seller,
-  keys,
+  hashId,
   resellable,
   updateaTable,
   listingPrice,
-  updateListing,
+  updateStatusText,
 }) {
   const [imageURI, setImageURI] = useState("");
   const [tokenName, setTokenName] = useState("");
@@ -43,8 +42,10 @@ export default function NFTBox({
 
   const { isWeb3Enabled, account } = useMoralis();
 
-  const router = useRouter();
-  const hideModal = () => setShowModal(false);
+  const hideModal = () => {
+    setShowModal(false);
+    setPending(false);
+  };
   const dispatch = useNotification();
 
   const isOwnedByUser = seller === account || seller === undefined;
@@ -99,17 +100,7 @@ export default function NFTBox({
       },
     });
   }
-  // async function updateUI() {
-  //   const tokenURI = await getTokenURI();
-  //   // We are going to cheat a little here...
-  //   if (tokenURI) {
-  //     const tokenURIResponse = await (await fetch(tokenURI)).json();
-  //     const imageURIURL = tokenURIResponse.image;
-  //     setImageURI(imageURIURL);
-  //     setTokenName(tokenURIResponse.name);
-  //     setTokenDescription(tokenURIResponse.description);
-  //   }
-  // }
+
   const updateUI = useCallback(async () => {
     const tokenURI = await getTokenURI();
     // We are going to cheat a little here...
@@ -147,6 +138,7 @@ export default function NFTBox({
   };
 
   async function handleBuyItemSuccess(tx) {
+    updateStatusText("Transaction Pending");
     await tx.wait(1);
     updateaTable(tokenId);
     dispatch({
@@ -157,6 +149,7 @@ export default function NFTBox({
     });
   }
   async function handleResellItemSuccess(tx) {
+    updateStatusText("Transaction Pending");
     await tx.wait(1);
     updateaTable(tokenId);
     dispatch({
@@ -166,6 +159,9 @@ export default function NFTBox({
       position: "topR",
     });
   }
+  function updateaTable() {
+    updateaTable(tokenId);
+  }
   return (
     <div className="m-3">
       <div>
@@ -174,19 +170,15 @@ export default function NFTBox({
             <UpdateListingModal
               isVisible={showModal}
               tokenId={tokenId}
+              hashId={hashId}
               marketplaceAddress={marketplaceAddress}
               nftAddress={nftAddress}
               onClose={hideModal}
-              updateListing={updateListing}
+              updateStatusText={updateStatusText}
+              updateaTable={updateaTable}
             />
             <Card onClick={handleCardClick}>
               <div className="p-2 relative">
-                {pending ? (
-                  <div className="absolute top-0">
-                    <Tag active text="Status Pending" theme="status" />
-                  </div>
-                ) : null}
-
                 <div className="flex flex-col items-end gap-2">
                   <div>
                     #{tokenId} {isOwnedByUser}

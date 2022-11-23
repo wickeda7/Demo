@@ -1,13 +1,12 @@
 import React from "react";
 import { useWeb3Contract } from "react-moralis";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, Image, Container, Textarea } from "@nextui-org/react";
 import axios from "axios";
 import { ethers } from "ethers";
 import { Input, useNotification } from "web3uikit";
 import NftMarket from "../constants/abi.json";
-
-const UploadNFT = ({ updateaTable, updateListing }) => {
+const UploadNFT = ({ updateaTable, updateStatusText, reset }) => {
   const [fileUrl, setFileUrl] = useState(null);
   const [uploading, setUploading] = useState(null);
   const [loadingState, setLoadingState] = useState(false);
@@ -16,6 +15,19 @@ const UploadNFT = ({ updateaTable, updateListing }) => {
     name: "",
     description: "",
   });
+  const { name, description, price } = formInput;
+  if (reset) {
+    if (!name && !description && !price && document) {
+      const timer = setTimeout(() => {
+        if (document) {
+          document.getElementById("name").value = "";
+          document.getElementById("desc").value = "";
+          document.getElementById("price").value = "";
+          document.getElementById("asset").value = null;
+        }
+      }, 500);
+    }
+  }
 
   const { runContractFunction } = useWeb3Contract();
   const marketplaceAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
@@ -126,12 +138,6 @@ const UploadNFT = ({ updateaTable, updateListing }) => {
       name: "",
       description: "",
     });
-    setTimeout(() => {
-      document.getElementById("name").value = "";
-      document.getElementById("desc").value = "";
-      document.getElementById("price").value = "";
-      document.getElementById("asset").value = null;
-    }, 500);
   }
   async function handleCreatSuccess(tx) {
     dispatch({
@@ -140,7 +146,7 @@ const UploadNFT = ({ updateaTable, updateListing }) => {
       title: "NFT submitted",
       position: "topR",
     });
-    updateListing("New NFT Pending");
+    updateStatusText("New NFT Pending");
     await tx.wait(1);
     updateaTable(fileUrl);
     dispatch({
@@ -150,6 +156,7 @@ const UploadNFT = ({ updateaTable, updateListing }) => {
       position: "topR",
     });
   }
+
   return (
     <div>
       <h1 color="white">Create and Sell your NFT in the Marketplace</h1>
@@ -190,9 +197,8 @@ const UploadNFT = ({ updateaTable, updateListing }) => {
         <Card style={{ border: "none" }}>
           <Card.Body style={{ backgroundColor: "#000000" }}>
             <Input
-              id="price"
-              css={{ marginTop: "$2" }}
               placeholder="Price (in ETH)"
+              id="price"
               onChange={(e) =>
                 updateFormInput({ ...formInput, price: e.target.value })
               }
