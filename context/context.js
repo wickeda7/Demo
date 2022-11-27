@@ -54,7 +54,6 @@ export const DemoProvider = ({ children }) => {
       typeof window !== "undefined" &&
       window.localStorage.getItem("provider")
     ) {
-      //console.log("ssdsfsdf", parseInt(chainId).toString());
     }
   }, [isWeb3Enabled]);
 
@@ -110,7 +109,6 @@ export const DemoProvider = ({ children }) => {
         sendEth();
         const transaction = await Moralis.executeFunction(options);
         const receipt = await transaction.wait(4);
-        console.log(receipt);
       } else {
         swapTokens();
       }
@@ -131,7 +129,9 @@ export const DemoProvider = ({ children }) => {
     };
     const transaction = await Moralis.transfer(options);
     const receipt = await transaction.wait();
-    console.log(receipt);
+    if (receipt) {
+      setOpenBuyCryptoModal(false);
+    }
   };
   const swapTokens = async () => {
     try {
@@ -159,8 +159,9 @@ export const DemoProvider = ({ children }) => {
       let toMintTransaction = await Moralis.executeFunction(toMintOptions);
       let fromReceipt = await fromTransaction.wait();
       let toReceipt = await toMintTransaction.wait();
-      console.log(fromReceipt);
-      console.log(toReceipt);
+      if (toReceipt) {
+        setOpenBuyCryptoModal(false);
+      }
     } catch (error) {
       console.error(error.message);
     }
