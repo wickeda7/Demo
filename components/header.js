@@ -30,17 +30,17 @@ const Header = () => {
   //   coins.set('name', 'BitHoss')
   //   await coins.save();
   // }
-  let acName = "";
-  const { account } = useContext(DemoContext);
-  if (account) {
-    acName = account.slice(0, 6) == "0x9d29" ? "ACCOUNT2" : "ACCOUNT1";
-  }
+  // let acName = "";
+  // const { account } = useContext(DemoContext);
+  // if (account) {
+  //   acName = account.slice(0, 6) == "0x9d29" ? "ACCOUNT2" : "ACCOUNT1";
+  // }
 
   const router = useRouter();
   return (
     <div className={styles.header}>
       {/* <button onClick={test}>Save</button> */}
-      {acName}
+      {/* {acName} */}
       <Image
         alt=""
         src="https://s2.coinmarketcap.com/static/cloud/img/coinmarketcap_white_1.svg"
