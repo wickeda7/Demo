@@ -4,10 +4,6 @@ import Image from "next/image";
 import Search from "../assets/svg/search";
 import ConnectButton2 from "./ConnectButton";
 import { useRouter } from "next/router";
-// import { useContext } from 'react'
-import { DemoContext } from "../context/context";
-import { useContext } from "react";
-//import { useMoralis } from "react-moralis";
 
 const styles = {
   navLink: `text-white flex mx-[10px]`,
@@ -62,12 +58,16 @@ const Header = () => {
           <div className={styles.navItem}>
             <div
               className={
-                router.pathname == "/nft" ? styles.navActive : styles.navLink
+                router.pathname == "/marketplace"
+                  ? styles.navActive
+                  : styles.navLink
               }
             >
-              <Link href="/nft">MarketPlace</Link>
+              <Link href="/marketplace">MarketPlace</Link>
             </div>
-            {router.pathname == "/nft" && <div className={styles.badge} />}
+            {router.pathname == "/marketplace" && (
+              <div className={styles.badge} />
+            )}
           </div>
           <div className={styles.navItem}>
             <div
