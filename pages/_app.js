@@ -4,6 +4,7 @@ import { DemoProvider } from "../context/context";
 import { createTheme, NextUIProvider } from "@nextui-org/react";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import { NotificationProvider } from "web3uikit";
+import Script from "next/script";
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -38,20 +39,40 @@ function MyApp({ Component, pageProps }) {
     },
   });
   return (
-    <MoralisProvider
-      serverUrl={process.env.NEXT_PUBLIC_SERVER_URL ?? ""}
-      appId={process.env.NEXT_PUBLIC_APPLICATION_ID ?? ""}
-    >
-      <ApolloProvider client={client}>
-        <DemoProvider>
-          <NextUIProvider theme={theme}>
-            <NotificationProvider>
-              <Component {...pageProps} />
-            </NotificationProvider>
-          </NextUIProvider>
-        </DemoProvider>
-      </ApolloProvider>
-    </MoralisProvider>
+    <>
+      <Script
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=UA-40325660-2"
+      />
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '=UA-40325660-2', {
+page_path: window.location.pathname,
+});
+`,
+        }}
+      />
+      <MoralisProvider
+        serverUrl={process.env.NEXT_PUBLIC_SERVER_URL ?? ""}
+        appId={process.env.NEXT_PUBLIC_APPLICATION_ID ?? ""}
+      >
+        <ApolloProvider client={client}>
+          <DemoProvider>
+            <NextUIProvider theme={theme}>
+              <NotificationProvider>
+                <Component {...pageProps} />
+              </NotificationProvider>
+            </NextUIProvider>
+          </DemoProvider>
+        </ApolloProvider>
+      </MoralisProvider>
+    </>
   );
 }
 
